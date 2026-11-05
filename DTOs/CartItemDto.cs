@@ -1,0 +1,10 @@
+namespace WebApplication1.DTOs
+{
+    public class CartItemDto
+    {
+        public int Id { get; set; }
+        public int CartId { get; set; }
+        public int Quantity { get; set; }
+        public ProductShortDto Product { get; set; } = null!;
+    }
+}
