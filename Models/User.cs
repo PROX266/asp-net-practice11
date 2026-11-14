@@ -13,7 +13,6 @@ public partial class User
 
     public byte[] UserPassword { get; set; } = null!;
 
-    // Хеш пароля от PasswordHasher<User> (строка). Старый столбец UserPassword остаётся для MVC-сайта.
     public string? PasswordHash { get; set; }
 
     public int RoleId { get; set; }

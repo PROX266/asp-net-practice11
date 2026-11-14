@@ -63,8 +63,6 @@ namespace WebApplication1
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
-                // Кнопка Authorize в Swagger UI — чтобы можно было вставить
-                // "Bearer <токен>" и проверять защищённые эндпоинты прямо оттуда.
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -74,8 +72,7 @@ namespace WebApplication1
                     In = ParameterLocation.Header,
                     Description = "Введите: Bearer {ваш JWT-токен}",
                 });
-
-                // Замок только у методов с [Authorize] (а не у всех подряд)
+                
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
@@ -89,9 +86,7 @@ namespace WebApplication1
                 .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "keys")));
 
             var jwtSection = builder.Configuration.GetSection("Jwt");
-
-            // MVC-сайт остаётся на cookie, а /api/* проверяется по JWT.
-            // Policy-схема выбирает схему по пути запроса.
+            
             builder.Services.AddAuthentication(options =>
                 {
                     options.DefaultScheme = "CookieOrJwt";
@@ -138,8 +133,7 @@ namespace WebApplication1
 
                 options.AddPolicy(Policies.AdminOnly, policy =>
                     policy.RequireRole(AppRoles.Admin));
-
-                // resource-based: проверяется вручную через IAuthorizationService
+                
                 options.AddPolicy(Policies.OrderOwnerOrAdmin, policy =>
                     policy.Requirements.Add(new OrderOwnerRequirement()));
             });
@@ -163,7 +157,6 @@ namespace WebApplication1
 
             builder.Services.AddRateLimiter(options =>
             {
-                // не больше 5 попыток входа в минуту с одного IP
                 options.AddPolicy("LoginPolicy", httpContext =>
                     RateLimitPartition.GetFixedWindowLimiter(
                         httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",

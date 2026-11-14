@@ -10,7 +10,6 @@ function initialToken() {
   const t = getToken()
   if (!t) return null
   const info = decodeToken(t)
-  // просроченный токен не используем
   if (!info || (info.exp && info.exp < new Date())) {
     clearToken()
     return null
@@ -47,7 +46,6 @@ export default function App() {
     setView('catalog')
   }
 
-  // Обёртка над запросом: ошибки показываются уведомлениями, при 401 с токеном выполняется выход
   const call = useCallback(
     async (path, options = {}) => {
       const { messages, silent, ...rest } = options

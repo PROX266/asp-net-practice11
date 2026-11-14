@@ -4,8 +4,6 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApplication1.Swagger;
 
-// Вешает замок (security requirement) только на методы, где реально стоит [Authorize]
-// и нет [AllowAnonymous]. Открытые методы остаются без замка.
 public class AuthorizeCheckOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)

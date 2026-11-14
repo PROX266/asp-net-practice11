@@ -6,7 +6,6 @@ export const getToken = () => localStorage.getItem(TOKEN_KEY)
 export const setToken = (t) => localStorage.setItem(TOKEN_KEY, t)
 export const clearToken = () => localStorage.removeItem(TOKEN_KEY)
 
-// Разбор payload JWT только для отображения имени/роли/срока (подпись проверяет сервер)
 export function decodeToken(token) {
   try {
     const part = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
@@ -25,8 +24,6 @@ export function decodeToken(token) {
   }
 }
 
-// Если fetch упал с TypeError, это либо CORS, либо сервер недоступен.
-// Запрос в режиме no-cors не требует разрешения CORS: если он дошёл, сервер жив и виноват CORS.
 async function diagnoseNetworkError() {
   try {
     await fetch(`${API_URL}/api/products?pageSize=1`, { mode: 'no-cors' })
@@ -46,7 +43,6 @@ function classify(status) {
   return 'server'
 }
 
-// Единая функция запроса к API. Токен подставляется в заголовок Authorization.
 export async function apiRequest(path, { method = 'GET', body, auth = true } = {}) {
   const headers = {}
   if (body !== undefined) headers['Content-Type'] = 'application/json'
@@ -87,7 +83,6 @@ export async function apiRequest(path, { method = 'GET', body, auth = true } = {
   }
 }
 
-// Текст ошибки для пользователя. overrides позволяет задать свои формулировки для конкретного действия.
 export function failureText(res, overrides = {}) {
   if (overrides[res.kind]) return overrides[res.kind]
   switch (res.kind) {

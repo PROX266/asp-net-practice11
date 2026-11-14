@@ -4,8 +4,6 @@ using WebApplication1.DTOs;
 
 namespace WebApplication1.Security;
 
-// Resource-based авторизация: ресурс — конкретный заказ (OrderDto).
-// Доступ разрешён администратору или пользователю, которому заказ принадлежит.
 public class OrderOwnerHandler : AuthorizationHandler<OrderOwnerRequirement, OrderDto>
 {
     protected override Task HandleRequirementAsync(

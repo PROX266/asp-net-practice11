@@ -116,7 +116,7 @@ public class UserService : IUserService
 
         var role = await _repository.FindRoleByNameAsync("User", ct)
             ?? throw new InvalidOperationException(
-                "Роль 'User' не найдена. Выполните скрипт Scripts/pr4_jwt_auth.sql.");
+                "Роль 'User' не найдена.");
 
         var user = new User
         {
@@ -124,7 +124,6 @@ public class UserService : IUserService
             UserName = login,
             RoleId = role.Id,
             IsActive = true,
-            // столбец user_password старого MVC-входа NOT NULL; пустое значение не проходит Verify
             UserPassword = Array.Empty<byte>()
         };
         user.PasswordHash = _hasher.HashPassword(user, password);
@@ -157,8 +156,6 @@ public class UserService : IUserService
         }
         else
         {
-            // Пользователь создан до JWT-работы (старый хеш): проверяем по-старому
-            // и сразу переводим на PasswordHasher.
             if (!PasswordHelper.Verify(password, user.UserPassword)) return null;
 
             user.PasswordHash = _hasher.HashPassword(user, password);

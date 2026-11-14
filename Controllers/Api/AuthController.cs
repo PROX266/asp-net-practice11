@@ -43,8 +43,6 @@ public class AuthController : ControllerBase
     }
 
     // POST /api/auth/login
-    // Ограничен rate limiting-политикой "LoginPolicy" (см. Program.cs) —
-    // не больше 5 попыток в минуту с одного адреса, дальше 429.
     [EnableRateLimiting("LoginPolicy")]
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto, CancellationToken cancellationToken)
@@ -63,7 +61,7 @@ public class AuthController : ControllerBase
         });
     }
 
-    // GET /api/auth/me — защищённый эндпоинт: любой авторизованный пользователь
+    // GET /api/auth/me
     [Authorize]
     [HttpGet("me")]
     public IActionResult Me()

@@ -9,7 +9,6 @@ export default function LoginScreen({ onAuthenticated }) {
   const [busy, setBusy] = useState(false)
   const [lockSeconds, setLockSeconds] = useState(0)
 
-  // Пока действует блокировка rate limiting, кнопка неактивна и показывает обратный отсчёт
   useEffect(() => {
     if (lockSeconds <= 0) return
     const id = setTimeout(() => setLockSeconds((s) => s - 1), 1000)
