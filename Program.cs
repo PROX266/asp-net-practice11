@@ -233,11 +233,7 @@ namespace WebApplication1
             });
 
             app.UseRouting();
-
-            // 1. CORS — решает, пропускать ли запрос от этого origin
-            // 2. Аутентификация — кто ты
-            // 3. Авторизация — что тебе можно
-            // 4. Rate limiter — не слишком ли часто (уже знает конкретный эндпоинт)
+            
             app.UseCors(FrontendPolicy);
             app.UseAuthentication();
             app.UseAuthorization();
